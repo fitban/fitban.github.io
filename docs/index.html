@@ -1,7 +1,114 @@
-<html>
+<!DOCTYPE HTML>
+<html lang="en">
 <head>
+<title>Fitban</title>
+<style>
+h1
+{
+	float:right;
+	border:2px solid #ccc;
+	background:#eee;
+	padding:1px 5px;
+	margin-top:0;
+}
+#content
+{
+	border:2px solid #ddd;
+	border-radius:3px;
+	background:#eee;
+	padding:1px 10px;
+	clear:both;
+	width:1280px;
+	margin-left:auto;
+	margin-right:auto;
+}
+#content #frame
+{
+	margin:100px 150px;
+}
+#end
+{
+	text-align:center;
+}
+pre
+{
+	border-left:1px solid #000;
+	padding:20px 10px;
+}
+</style>
 </head>
 <body>
-c++
+
+<div id="content">
+<h1>Fitban</h1>
+<div id="frame">
+
+<h2>gcc compiler</h2>
+
+<p>
+gcc is a c++ compiler for the c++ programming language.
+</p>
+<p>
+<a href="https://gcc.gnu.org">https://gcc.gnu.org</a>
+</p>
+
+<h2>g++ 16.0.0 20250422 (gcc)</h2>
+
+<p>gpp --version</p>
+<p>
+gpp (GCC) 16.0.0 20250422 (experimental)<br />
+Copyright (C) 2025 Free Software Foundation, Inc.<br />
+This is free software; see the source for copying conditions.  There is NO<br />
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+</p>
+
+<h2>g++ 16.0 and c++26 pack indexing</h2>
+
+<pre>
+#include &lt;iostream&gt;
+
+template &lt;typename ... type_list&gt;
+class my_basic_class
+{
+};
+
+template &lt;auto ... value_list&gt;
+class my_class
+{
+public:
+	template &lt;int ... index_list&gt;
+	constexpr static auto tuple()
+	{
+		return std::tuple{value_list ... [index_list] ...};
+	}
+};
+
+template &lt;typename ... type_list&gt;
+class my_class_2
+{
+};
+
+int main()
+{
+	using type = my_class&lt;3.2, 25, true, 2.3f, 11u&gt;;
+
+	constexpr auto x1 = type::tuple&lt;0, 2, 2, 0, 3&gt;();
+	constexpr auto x2 = type::tuple&lt;4, 3, 2, 1&gt;();
+
+	static_assert(x1 == std::tuple&lt;double, bool, bool, double, float&gt;{3.2, true, true, 3.2, 2.3f});
+	static_assert(x2 == std::tuple&lt;unsigned, float, bool, int&gt;{11u, 2.3f, true, 25});
+}
+</pre>
+
+</div>	<!-- id="frame" -->
+</div>	<!-- id="content" -->
+
+<div id="end">
+<hr />
+<p>
+<a href="https://www.fitban.tiv.cc">Fitban</a>
+</p>
+</div>
+
 </body>
 </html>
