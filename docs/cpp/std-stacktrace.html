@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>std::stacktrace, std::basic_stacktrace, c++</title>
+<style>
+body {max-width:1000pt;margin-left:auto;margin-right:auto;border:1px solid #bbb}
+h1 {text-align:center}
+.text-para {float:left;width:40%;margin:20px}
+.code-text-para {width:800px;margin:20px;border:1px solid #eee;background:#ddd;padding:20px;margin-left:auto;margin-right:auto;clear:both}
+.code-para {font-size:13px;width:80%;margin:20px;border:1px solid #eee;background:#ddd;padding:20px;margin-left:auto;margin-right:auto;clear:both}
+.code-para pre {border:2px dashed #070;padding:20px;width:950px}
+#end {text-align:center}
+</style>
+</head>
+<body>
+<h1>std::stacktrace, std::basic_stacktrace, c++</h1>
+<div class="text-para">
+<h2>c++ std::stacktrace</h2>
+<p>
+The c++ std::stacktrace stack trace object is an object in programming that keeps track of the called functions until a particular point in the program. It keeps a log of the stack frames currently present in the function call stack of the program.
+</p>
+</div>
+<div class="text-para">
+<h2>std::stacktrace_entry (class)</h2>
+<p>c++ std::stacktrace_entry represents the record of a single stack frame in the function call stack. </p>
+</div>
+<div class="text-para">
+<h2>std::stacktrace (class)</h2>
+<p>
+c++ std::stacktrace class is the actual class that keeps the records of the stack frames along with their sequence of execution.
+</p>
+</div>
+<div class="code-text-para">
+<h2>std::stacktrace:</h2>
+<h3>static method: std::stacktrace::current(...)</h3>
+<p>std::stacktrace::current(alloc);</p>
+<p>std::stacktrace::current(skip, alloc);</p>
+<p>std::stacktrace::current(skip, max_depth, alloc);</p>
+<h3>Method: std::stacktrace::begin(), std::stacktrace::end()</h3>
+<p>It can be used for range-based for-loop</p>
+<h3>Method: .operator[]</h3>
+<p>Access specified single frame by index</p>
+<h3>Methd: bool .empty()</h3>
+<p>Is stacktrace empty?</p>
+<h3>Methd: .size()</h3>
+<p>Get stacktrace frame count</p>
+<h3>Method: .max_size()</h3>
+<p>Get possible max frame count</p>
+<h3>std::to_string(the_stacktrace)</h3>
+<p>Convert std::stacktrace object to std::string</p>
+<h3>.operator<=></h3>
+<h3>.operator==</h3>
+</div>	<!-- .code-text-para -->
+<div class="code-para" -->
+<h2>c++ example:</h2>
+<pre>
+import std;
+
+namespace my_space
+{
+	class my_class
+	{
+	public:
+		virtual ~my_class()
+		{
+			{
+				std::stacktrace stacktrace{std::stacktrace::current()};
+				std::cout &lt;&lt; "----------------------------------------\n";
+				std::cout &lt;&lt; "size: " &lt;&lt; stacktrace.size() &lt;&lt; std::endl;
+				std::cout &lt;&lt; "possible max size: " &lt;&lt; stacktrace.max_size() &lt;&lt; std::endl;
+				std::cout &lt;&lt; "empty: " &lt;&lt; std::boolalpha &lt;&lt; stacktrace.empty() &lt;&lt; std::endl;
+				std::cout &lt;&lt; stacktrace &lt;&lt; std::endl;
+				std::cout &lt;&lt; "At 3: " &lt;&lt; stacktrace[3] &lt;&lt; std::endl;
+				std::cout &lt;&lt; "range-based for loop:" &lt;&lt; std::endl;
+				for (const std::stacktrace_entry & x: stacktrace)
+					std::cout &lt;&lt; x &lt;&lt; std::endl;
+			}
+			{
+				std::stacktrace stacktrace{std::stacktrace::current(0, 1000)};
+				std::cout &lt;&lt; "Real max size: " &lt;&lt; stacktrace.size() &lt;&lt; std::endl;
+			}
+			{
+				std::stacktrace stacktrace = std::stacktrace::current(2, 3);
+				std::cout &lt;&lt; "----------------------------------------\n";
+				std::cout &lt;&lt; "From 2 to 2+3:\n";
+				std::cout &lt;&lt; stacktrace &lt;&lt; std::endl;
+				std::cout &lt;&lt; "std::to_string:" &lt;&lt; std::endl &lt;&lt; std::to_string(stacktrace) &lt;&lt; std::endl;
+			}
+		}
+	};
+}
+
+int main()
+{
+	my_space::my_class my_object;
+}
+</pre>
+</div>	<!-- .code-para -->
+<hr />
+<div id="end">
+<p>Written: Tue May 13 02:20:45 AM UTC 2025</p>
+<p>
+<a href="." title="https://www.fitban.tiv.cc/cpp">Up: c++</a>
+</p>
+</div>	<!-- #end -->
+</body>
+</html>

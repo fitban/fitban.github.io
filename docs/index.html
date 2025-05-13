@@ -45,6 +45,17 @@ a:hover
 {
 	background:#bbb;
 }
+#subspace
+{
+	border:3px solid #ddd;
+	border-radius:5px;
+	width:300px;
+	background:#ccc;
+	float:right;
+	text-align:center;
+	padding-top:3px;
+	padding-bottom:40px;
+}
 </style>
 </head>
 <body>
@@ -52,6 +63,24 @@ a:hover
 <div id="content">
 <h1>Fitban</h1>
 <div id="frame">
+
+<div id="subspace">
+
+<div id="menu">
+<h2>Menu</h2>
+<a href="cpp" title="c++ Language">c++ Language</a><br />
+<a href="cpp-libraries" title="c++ Libraries">c++ Libraries</a><br />
+<a href="cpp-projects" title="c++ Projects">c++ Projects</a><br />
+</div>	<!-- #subspace #menu -->
+
+<div id="update">
+<h2>Update</h2>
+<a href="cpp/std-stacktrace.html">std::stacktrace</a><br />
+<a href="cpp/std-stacktrace_entry.html">std::stacktrace_entry</a><br />
+</div>	<!-- #subspace #update -->
+
+</div>	<!-- #subspace -->
+
 
 <h2>Gcc compiler</h2>
 
@@ -72,7 +101,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 <h2>g++ 16.0 and c++26 pack indexing</h2>
 
 <pre>
-#include &lt;iostream&gt;
+import std;
 
 template &lt;typename ... type_list&gt;
 class my_basic_class

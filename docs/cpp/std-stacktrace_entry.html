@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>std::stacktrace_entry, c++</title>
+<style>
+body {max-width:1000pt;margin-left:auto;margin-right:auto;border:1px solid #bbb}
+h1 {text-align:center}
+.text-para {float:left;width:40%;margin:20px}
+.code-text-para {width:800px;margin:20px;border:1px solid #eee;background:#ddd;padding:20px;margin-left:auto;margin-right:auto;clear:both}
+.code-para {font-size:13px;width:80%;margin:20px;border:1px solid #eee;background:#ddd;padding:20px;margin-left:auto;margin-right:auto;clear:both}
+.code-para pre {border:2px dashed #070;padding:20px;width:950px}
+#end {text-align:center}
+</style>
+</head>
+<body>
+<h1>std::stacktrace_entry, c++</h1>
+<div class="text-para">
+<h2>std::stacktrace_entry (class)</h2>
+<p>The std::stacktrace_entry class provides operations for querying information about an evaluation in a stacktrace. Each stacktrace_entry object is either empty, or represents an evaluation in a stacktrace.</p>
+<p>c++ std::stacktrace_entry represents the record of a single stack frame in the function call stack. </p>
+</div>
+<div class="text-para">
+<h2>c++ std::stacktrace</h2>
+<p>
+The c++ std::stacktrace stack trace object is an object in programming that keeps track of the called functions until a particular point in the program. It keeps a log of the stack frames currently present in the function call stack of the program.
+</p>
+</div>
+<div class="code-text-para">
+<h2>std::stacktrace_entry</h2>
+<h3>Method: .description()</h3>
+<p>Get frame description</p>
+<h3>Method: .source_file()</h3>
+<p>Get related source file name</p>
+<h3>Method: .source_line()</h3>
+<p>Get related source file line number</p>
+<h3>Method: .operator bool</h3>
+<p>Check if the frame is empty</p>
+<h3>std::to_string(entry)</h3>
+<p>Convert to std::string</p>
+<h3>.operator<=></h3>
+<h3>.operator==</h3>
+</div>	<!-- .code-text-para -->
+<div class="code-para" -->
+<h2>c++ example:</h2>
+<pre>
+import std;
+
+namespace my_space
+{
+	class my_base_class
+	{
+	public:
+		void print(const std::stacktrace & stacktrace) const
+		{
+			for (const std::stacktrace_entry & frame: stacktrace)
+			{
+				std::cout &lt;&lt; frame &lt;&lt; "\n=&gt;" &lt;&lt; std::endl;
+				if (! frame)
+					std::cout &lt;&lt; "&lt;This frame is empty&gt;" &lt;&lt; std::endl;
+				std::cout
+					&lt;&lt; "\tdescription: " &lt;&lt; frame.description() &lt;&lt; '\n'
+					&lt;&lt; "\tsource file: " &lt;&lt; frame.source_file() &lt;&lt; '\n'
+					&lt;&lt; "\tsource line: " &lt;&lt; frame.source_line() &lt;&lt; '\n'
+				;
+			}
+		}
+	public:
+		virtual ~my_base_class()
+		{
+		}
+	};
+
+	class my_derived_class: virtual public my_base_class
+	{
+	public:
+		~my_derived_class()
+		{
+			std::stacktrace stacktrace = std::stacktrace::current();
+			std::cout &lt;&lt; "----------------------------------------" &lt;&lt; std::endl;
+			std::cout &lt;&lt; stacktrace &lt;&lt; std::endl;
+			std::cout &lt;&lt; "----------------------------------------" &lt;&lt; std::endl;
+			this-&gt;print(stacktrace);
+		}
+	};
+}
+
+int main()
+{
+	auto ptr = new my_space::my_derived_class;
+	delete ptr;
+	ptr = nullptr;
+	std::cout &lt;&lt; "---- returned ----\n";
+}
+</pre>
+</div>	<!-- .code-para -->
+<hr />
+<div id="end">
+<p>Written: Tue May 13 02:34:38 AM UTC 2025</p>
+<p>
+<a href="." title="https://www.fitban.tiv.cc/cpp">Up: c++</a>
+</p>
+</div>	<!-- #end -->
+</body>
+</html>
