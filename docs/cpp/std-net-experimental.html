@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>std::net, c++ ,,, std::experimental::net</title>
+<style>
+#bodyroot {width:1000px;margin-left:auto;margin-right:auto}
+h1 {text-align:right}
+.text-para {width:450px;float:left;margin:5px}
+.codepre {border:1px dashed #aaa;width:400px;border-right:none;padding:5px}
+#end {text-align:center}
+</style>
+</head>
+<body>
+<div id="bodyroot">
+
+<h1>std::net, c++ ,,, std::experimental::net</h1>
+
+<div class="text-para">
+<p>td::net, the c++ networking library, gcc compiler has implemented it as std::experimental::net. std::net design is based on the boost asio library.</p>
+<p>Asio is a cross-platform low-level library for network and I/O programming.</p>
+<p><a href="https://think-async.com/Asio">https://think-async.com/Asio</a></p>
+<p><a href="https://www.boost.org/libs/asio">https://www.boost.org/libs/asio</a></p>
+</div>	<!-- .text-para -->
+
+<div class="text-para">
+<p>
+Header:<br />
+&lt;experimental/net&gt;
+</p>
+</div>	<!-- .text-para -->
+
+<div class="text-para">
+<p>Using std::net with gcc compiler:</p>
+<pre class="codepre">
+namespace std
+{
+	using namespace std::experimental;
+}
+</pre>
+</div>	<!-- .text-para -->
+
+<div style="clear:both"><hr /></div>
+
+<div class="text-para">
+<p>
+Build install gcc compiler from git:
+</p>
+<pre class="codepre">
+git clone --depth=1 https://gcc.gnu.org/git/gcc
+</pre>
+<p>
+After building installing git gcc compiler, the experimental c++ net headers will be installed to gcc c++ system header directory experimental/.
+</p>
+</div>	<!-- .text-para -->
+
+<div class="text-para">
+<p>c++ example:</p>
+<pre class="codepre">
+#include &lt;experimental/net&gt;
+#include &lt;iostream&gt;
+
+namespace std
+{
+	using namespace std::experimental;
+}
+
+int main()
+{
+	std::net::io_context io_context;
+	io_context.restart();
+	std::net::io_context::executor_type exec = io_context.get_executor();
+	std::cout &lt;&lt; std::boolalpha &lt;&lt; exec.running_in_this_thread() &lt;&lt; std::endl;
+	std::net::io_context & context = exec.context();
+}
+</pre>
+<p>Compile it:</p>
+<p>g++ net-prog.cpp -std=c++26 -o net-prog</p>
+</div>	<!-- .text-para -->
+
+<div style="clear:both"><hr /></div>
+
+<div id="end">
+<p>
+<a href=".">Up: c++</a>
+</p>
+</div>
+
+</div>	<!-- #bodyroot -->
+</body>
+</html>
