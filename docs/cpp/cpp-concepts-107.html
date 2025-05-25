@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>c++ concepts 107</title>
+</head>
+<body>
+<div id="all" style="width:900px;margin-left:auto;margin-right:auto">
+<div style="text-align:center"><h1>c++ concepts 107</h1></div>
+<p>c++ concepts make c++ template programming funny, and make c++ template programming serious.</p>
+<p>Declaring a c++ concept is to use the keyword <i>concept</i>, and with template declaraton.</p>
+<pre style="border:1px solid #000;padding:10px;border-radius:3px;border-right:none">
+template &lt;typename type_target, typename type1, typename type2&gt;
+concept my_concept = an_expression_that_can_be_judged_true_or_false;
+</pre>
+<p>
+The first type <i>type_target</i> is the main type that will be constrained. The rest types (type1, type2, ...) are used to help to constrain the main type.
+</p>
+<p>c++ example:</p>
+<pre style="border:1px solid #000;padding:10px;border-radius:3px;border-right:none">
+#include &lt;iostream&gt;
+
+template &lt;typename type_target&gt;
+namespace <font color="#369"><strong>space</strong></font>
+{
+	<font color="#339769"><strong>concept</strong></font> <font color="#963"><strong>has_type</strong></font> = requires ()
+	{
+		typename type_target::type;
+	};
+	class m_class
+	{
+	public:
+		using type = int;
+	};
+	class n_class
+	{
+	public:
+		using type_t = float;
+	};
+}
+int main()
+{
+	std::cout << "c++, Hi!" << std::endl;
+	<font color="#963"><strong>space::has_type</strong></font> auto x = space::m_class{}; // OK: space::m_class has type.
+	<font color="#963"><strong>space::has_type</strong></font> auto y = space::n_class{}; // ERROR: space::n_class does not have type, it has type_t.
+}
+</pre>
+<div id="end" style="text-align:center">
+<p>Sun May 25 12:38:06 PM UTC 2025</p>
+<hr />
+<p>
+<a href=".">Up: c++</a>
+</p>
+</div>	<!-- id="end" -->
+</div>	<!-- id="all" -->
+</body>
+</html>
