@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Type Inference,, c++ types</title>
+<style>
+pre {border:1px solid #000;padding:8px;border-right:none;border-radius:3px}
+</style>
+</head>
+<body style="margin:auto;width:1100px">
+
+<h1>Type Inference,, c++ types</h1>
+
+<p>Type inference is a feature of c++ language. It is done by the c++ compiler.</p>
+<p>inference</p>
+<p>deduce</p>
+<p>deduction</p>
+
+<h2>auto</h2>
+
+<p>If a variable is declared auto and initialized with a value, the type will be deduced from the initialized value's literal type.</p>
+
+<pre>
+auto x = 234;
+auto y = 2.5;
+</pre>
+
+<p>x is deduced as int, y is deduced as double commonly.</p>
+
+<h2>decltype</h2>
+
+<p>decltype can deduce a type from a variable.</p>
+
+<pre>
+int x;
+std::string y;
+using t1 = decltype(x);
+using t2 = decltype(y);
+</pre>
+
+<p>
+t1 is inferenced as int, t2 is inferenced as std::string.
+</p>
+
+<h2>Template Argument Deduction</h2>
+
+c++ Template argument can be inferenced too.
+
+<pre>
+template &lt;typename my_type&gt;
+class my_class
+{
+private:
+	my_type __my_value;
+public:
+	my_class(const my_type & my_value__):
+		__my_value{my_value__}
+	{
+	}
+};
+
+my_class&lt;int&gt; x{2345};
+my_class y{9.8872};
+</pre>
+
+<p>
+The type of x is <i>my_class&lt;int&gt;</i> as specified.
+</p>
+<p>
+The type of y is <i>my_class&lt;double&gt;</i> as its template argument is deduced.
+</p>
+
+<h2>Template Deduction Guide</h2>
+
+<p>Template deduction guide is a c++ glossary that stands for how to deduce a template specialized type with a special c++ code block.</p>
+
+<pre>
+#include &lt;iostream&gt;
+#include &lt;stdfloat&gt;
+
+namespace my_space
+{
+	template &lt;typename my_type&gt;
+	class my_class
+	{
+	public:
+		my_class(const my_type &)
+		{
+		}
+	};
+
+	// This is template deduction guide
+	my_class(const int &) -&gt; my_space::my_class&lt;float&gt;;
+
+	// This is template deduction guide
+	template &lt;std::floating_point type_t00&gt;
+	my_class(const type_t00 &) -&gt; my_space::my_class&lt;std::float128_t&gt;;
+}
+
+int main()
+{
+	my_space::my_class x{123};
+	my_space::my_class y{1.23};
+
+	using t1 = decltype(x);
+	using t2 = decltype(y);
+
+	static_assert(std::same_as&lt;t1, my_space::my_class&lt;float&gt;&gt;);
+	static_assert(std::same_as&lt;t2, my_space::my_class&lt;std::float128_t&gt;&gt;);
+}
+</pre>
+
+<p>
+Because those two template deduction guides,<br />
+x's type is deduced as my_space::my_class&ltfloat&gt;<br />
+and y's type is dedueced as my_space::my_class&lt;std::float128_t&gt;
+</p>
+
+<div style="text-align:center">
+<hr />
+<p>Mon May 26 02:45:09 AM UTC 2025</p>
+<hr />
+<p><a href=".">Up: c++</a></p>
+</div>
+
+</body>
+</html>
