@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>std::promise, 2290, c++</title>
+	<style>
+		#host {width:1000px;margin:auto;}
+		h1 {background:#aaa;padding:1px 5px;width:500px;font-size:30px;text-align:center;margin:auto;}
+		pre {border-left: 2px solid #333;padding-left:10px;margin-left:10px;}
+	</style>
+</head>
+<body>
+<div id="host">
+<h1>std::promise, 2290, c++</h1>
+
+<p>
+std::promise is a c++ class that provides a facility to store a value or an exception to be asynchronously acquired laterly via std::future object created by std::promise object.
+</p>
+
+<p>
+std::promise makes cross-thread exception possible.
+</p>
+
+<p>
+std::promise object can be referenced to or std::move to sub-thread.
+</p>
+
+<pre>
+#include &lt;iostream&gt;
+#include &lt;future&gt;
+#include &lt;thread&gt;
+#include &lt;complex&gt;	// std::sqrt
+#include &lt;functional&gt;
+#include &lt;vector&gt;
+
+using std::string_literals::operator""s;
+
+namespace nsa
+{
+	std::mutex mutex;
+
+	class my_class
+	{
+	private:
+		void make_value(std::promise&lt;double&gt; & promise, int value)
+		{
+			std::this_thread::sleep_for(std::chrono::seconds(2));
+			if (value &lt; 0)
+				throw std::runtime_error{"Negative value is not allowed: "s + std::to_string(value)};
+			promise.set_value(std::sqrt(value));
+		}
+	private:
+		void run_value(std::promise&lt;double&gt; & promise, int value)
+		{
+			try
+			{
+				this-&gt;make_value(std::ref(promise), value);
+			}
+			catch (...)
+			{
+				std::exception_ptr ptr = std::current_exception();
+				promise.set_exception(ptr);
+			}
+		}
+	private:
+		void be_back(std::promise&lt;double&gt; && promise, int value)
+		{
+			this-&gt;print("Be back: I will be back.");
+			this-&gt;run_value(std::ref(promise), value);
+		}
+		void i_will(std::promise&lt;double&gt; & promise, int value)
+		{
+			this-&gt;print("I will: I will be back.");
+			this-&gt;run_value(std::ref(promise), value);
+		}
+	public:
+		void back_set(int value)
+		{
+			std::promise&lt;double&gt; promise;
+			std::future&lt;double&gt; future = promise.get_future();
+			std::jthread thread{
+				std::bind(
+					&nsa::my_class::be_back,
+					this,
+					std::placeholders::_1,
+					std::placeholders::_2
+				),
+				std::move(promise),
+				value
+			};
+			thread.detach();
+			this-&gt;print("back_set: wait ...");
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+			this-&gt;print("back_set: get ...");
+			double r = future.get();
+			this-&gt;print("back_set: get value: "s + std::to_string(r));
+		}
+		void i_set(int value)
+		{
+			std::promise&lt;double&gt; promise;
+			std::future&lt;double&gt; future = promise.get_future();
+			std::jthread thread{
+				std::bind(
+					&nsa::my_class::i_will,
+					this,
+					std::placeholders::_1,
+					std::placeholders::_2
+				),
+				std::ref(promise),
+				value
+			};
+			thread.detach();
+			this-&gt;print("i_set: wait ...");
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+			this-&gt;print("i_set: get ...");
+			double r = future.get();
+			this-&gt;print("i_set: get value: "s + std::to_string(r));
+		}
+	private:
+		void back_wrap(int value)
+		{
+			try
+			{
+				this-&gt;back_set(value);
+			}
+			catch (const std::exception & e)
+			{
+				this-&gt;print("back_wrap c++ std::exception: "s + e.what());
+			}
+		}
+		void i_wrap(int value)
+		{
+			try
+			{
+				this-&gt;i_set(value);
+			}
+			catch (const std::exception & e)
+			{
+				this-&gt;print("i_wrap c++ std::exception: "s + e.what());
+			}
+		}
+	public:
+		void run()
+		{
+			std::vector&lt;std::jthread&gt; pool;
+			for (int i=-3; i&lt;=3; ++i)
+			{
+				pool.emplace_back(
+					std::bind(
+						&nsa::my_class::back_wrap,
+						this,
+						std::placeholders::_1
+					),
+					i
+				);
+			}
+			for (int i=-3; i&lt;=3; ++i)
+			{
+				pool.emplace_back(
+					std::bind(
+						&nsa::my_class::i_wrap,
+						this,
+						std::placeholders::_1
+					),
+					i
+				);
+			}
+		}
+	public:
+		void print(const std::string & str) const
+		{
+			std::unique_lock&lt;std::mutex&gt; lock{nsa::mutex};
+			std::cout &lt;&lt; str &lt;&lt; std::endl;
+		}
+	};
+}
+
+int main()
+{
+	nsa::my_class object;
+	object.run();
+}
+</pre>
+
+<p><br /><br /><br /></p>
+<p>Jul 6, 2025</p>
+<p><br /><br /><br /><hr /></p>
+
+<p>
+<a href=".">Back</a>
+&nbsp;&nbsp;&nbsp;
+<a href="..">Home</a>
+</p>
+</div>
+</body>
+</html>
